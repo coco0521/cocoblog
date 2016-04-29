@@ -1,0 +1,62 @@
+<%- include include/header.ejs %>
+  <%
+    articles.forEach(function(article) {
+    %>
+    <div class="media">
+        <div class="media-left">
+            <a href="#">
+                <img class="media-object" src="<%=article.user.avatar%>" alt="">
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading"><a href="/articles/detail/<%=article._id%>"><%=article.title%></a></h4>
+            <p><%-article.content%></p>
+        </div>
+        <div class="media-bottom">
+            作者：<%=article.user.username%>
+            发表时间：<%=article.createAt.toLocaleString()%>
+
+        </div>
+        阅读：<%= article.pv %>|
+        评论：<%= article.comments.length%>
+    </div>
+    <%
+    });
+  %>
+<!--分页-->
+<nav>
+    <ul class="pagination">
+        <!--加个判断，当页码不是首页的时候才显示上一页按钮-->
+        <%
+          if(pageNum>1){
+              %>
+                <li>
+                    <a href="/?keyword=<%=keyword%>&pageNum=<%=pageNum-1%>&&pageSize=<%pageSize%>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+              <%
+          }
+        %>
+        <%
+          for(var i = 1;i<=totalPage;i++){
+          %>
+            <li class="<%= i==pageNum?'active':''%>"><a href="/?keyword=<%=keyword%>&pageNum=<%=i%>&&pageSize=<%pageSize%>"><%=i%></a></li>
+          <%
+          }
+        %>
+
+        <%
+          if(pageNum<totalPage){
+              %>
+                <li>
+                    <a href="/?keyword=<%=keyword%>&pageNum=<%=pageNum+1%>&&pageSize=<%pageSize%>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+              <%
+          }
+        %>
+    </ul>
+</nav>
+<%- include include/footer.ejs %>
